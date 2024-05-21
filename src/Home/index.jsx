@@ -115,7 +115,7 @@ const Home = () => (
               flexDirection: "column",
               justifyContent: "space-between",
               height: "100%",
-              p: 2
+              p: 2,
             }}
           >
             <Typography>
@@ -299,7 +299,7 @@ const Home = () => (
             flexDirection: "column",
             justifyContent: "space-between",
             height: "100%",
-            mt: 2
+            mt: 2,
           }}
         >
           <Typography variant="h2">TORNE-SE A DIFERENÇA</Typography>
