@@ -35,7 +35,7 @@ const Pet = () => {
 
   useEffect(() => {
     const getPetFromService = async (id) => {
-      const petsResponse = (await PetsService.getPet({ id }))["data"][
+      const petsResponse = (await PetsService.getPet({ _id: id }))["data"][
         "data"
       ][0];
       setPet(petsResponse);
