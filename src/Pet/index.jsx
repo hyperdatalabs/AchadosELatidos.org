@@ -91,7 +91,7 @@ const Pet = () => {
               {pet && pet["attributes"] && pet["attributes"]["observacao"]}
             </Typography>
           </Box>
-          {pet["attributes"]["abrigo"]["data"] != null && (
+          {(pet["attributes"]["abrigo"] && pet["attributes"]["abrigo"]["data"] != null) && (
             <Alert icon={<Info fontSize="inherit" />} severity="info">
               Este animal está abrigado em{" "}
               {pet["attributes"] &&
@@ -102,7 +102,7 @@ const Pet = () => {
                 ]}
             </Alert>
           )}
-          {!pet["attributes"]["abrigo"]["data"] && (
+          {(!pet["attributes"]["abrigo"] || pet["attributes"]["abrigo"]["data"]) && (
             <Alert icon={<Warning fontSize="inherit" />} severity="error">
               Este animal <b>não</b> está abrigado e precisa de um abrigo!
             </Alert>
