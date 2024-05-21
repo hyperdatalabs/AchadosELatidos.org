@@ -108,13 +108,14 @@ const Home = () => (
             </video>
           </Box>
         </Grid>
-        <Grid item xs={12} sx={{ my: 2, textAlign: "center" }} md={6}>
+        <Grid item xs={12} sx={{ my: 2, textAlign: "center", mb: 4 }} md={6}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
               height: "100%",
+              p: 2
             }}
           >
             <Typography>
@@ -138,7 +139,7 @@ const Home = () => (
           </Box>
         </Grid>
       </Grid>
-      <Grid container sx={{ my: 2 }}>
+      <Grid container sx={{ my: 2, mb: 4 }}>
         <Grid item xs={12} md={6}>
           <Typography variant="h2">Como funciona?</Typography>
           <Box>
@@ -298,10 +299,11 @@ const Home = () => (
             flexDirection: "column",
             justifyContent: "space-between",
             height: "100%",
+            mt: 2
           }}
         >
-          <Typography variant="h2">FAÇA A DIFERENÇA</Typography>
-          <Typography>
+          <Typography variant="h2">TORNE-SE A DIFERENÇA</Typography>
+          <Typography sx={{ my: 4 }}>
             Seja um herói na vida de um animal perdido! Participe da nossa
             comunidade compartilhando posts, fornecendo dicas, ou se
             voluntariando para ajudar na busca. Cada gesto conta para trazer

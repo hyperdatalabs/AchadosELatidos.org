@@ -116,7 +116,7 @@ const FindPet = ({ onSearch }) => {
         </Typography>
       </Box>
       <Grid container spacing={2} sx={{ my: 2 }}>
-        {citys && citys.length && (
+        {citys && citys.length > 0 && (
           <Grid item xs={12} md={4}>
             <FindSelect
               handleChange={handleCityChange}
@@ -125,7 +125,7 @@ const FindPet = ({ onSearch }) => {
             />
           </Grid>
         )}
-        {origins && origins.length && (
+        {origins && origins.length > 0 && (
           <Grid item xs={12} md={4}>
             <FindSelect
               handleChange={handleOriginChange}
@@ -134,7 +134,7 @@ const FindPet = ({ onSearch }) => {
             />
           </Grid>
         )}
-        {petTypes && petTypes.length && (
+        {petTypes && petTypes.length > 0 && (
           <Grid item xs={8} md={4}>
             <FindSelect
               handleChange={handlePetTypeChange}
