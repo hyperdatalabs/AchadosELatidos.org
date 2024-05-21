@@ -62,9 +62,7 @@ const Pet = () => {
               sx={{ maxWidth: "100%", my: 2 }}
               loading="lazy"
               src={
-                pet["attributes"]["foto"]["data"][0]["attributes"]["formats"][
-                  "medium"
-                ].url
+                pet["attributes"]["foto"]["data"][0]["attributes"].url
               }
             />
           </Box>
