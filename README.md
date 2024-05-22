@@ -1,8 +1,22 @@
-# React + Vite
+# Achados e Latidos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AchadosELatidos é uma site open-source desenvolvido para ajudar brasileiros a encontrarem seus animais desaparecidos. Este projeto, criado com React e utilizando Node.js, permite que os usuários publiquem informações sobre seus animais perdidos e vejam relatórios de avistamentos para ajudar a reunir animais de estimação com seus donos.
 
-Currently, two official plugins are available:
+# Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js v18 ou superior
+
+# Setup
+
+- Instale as dependências
+
+```sh
+npm i
+```
+
+# Execução
+
+```sh
+npm run dev
+```
+
