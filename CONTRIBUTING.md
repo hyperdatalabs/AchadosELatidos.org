@@ -48,7 +48,7 @@ Para garantir um ambiente colaborativo e inclusivo, todos os participantes devem
 
 Se você tiver alguma dúvida ou precisar de ajuda durante o processo de contribuição, sinta-se à vontade para abrir uma issue neste repositório ou entrar em contato com os mantenedores do projeto (abaixo) ou via instagram @achadoselatidos
 
-- Alexander Diniz (alexander.diniz@thinkaigroup.com)
+- [Alexander Diniz](https://github.com/Ronkiro) (alexander.diniz@thinkaigroup.com)
 
 ## Agradecimentos
 
