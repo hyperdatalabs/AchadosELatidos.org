@@ -30,4 +30,6 @@ A Think:AI é uma empresa líder em tecnologia e inovação, especializada em in
 
 Para mais informações, visite o site oficial: [Think:AI](https://thinkaigroup.com).
 
-[]
+------------
+
+Feito com 💚 pela comunidade e pela equipe Think:AI. Esperamos que este projeto possa ajudar muitas pessoas a reunirem-se com seus amados animais de estimação.
