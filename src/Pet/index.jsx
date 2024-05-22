@@ -45,7 +45,7 @@ const Pet = () => {
 
   const handleShare = () => {
     navigator.share({
-      text: `Olá, eu estou tentando apoiar compartilhando este cãozinho. Ele está disponível em: ${window.origin}`,
+      text: `Olá, eu estou tentando apoiar compartilhando este cãozinho. Ele está disponível em: ${window.location.href}`,
     });
   };
 
