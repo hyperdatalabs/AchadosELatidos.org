@@ -47,7 +47,7 @@ const PetList = ({ searchParams }) => {
 
   return (
     <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }}>
-      <Grid container>
+      <Grid container spacing={2}>
         {pets.length &&
           pets.map((pet) => (
             <Pet
