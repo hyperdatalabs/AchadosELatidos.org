@@ -35,11 +35,13 @@ const FindPet = ({ onSearch }) => {
   const [origins, setOrigins] = useState([]);
   const [petTypes, setPetTypes] = useState([]);
   const [genders, setGenders] = useState([]);
+  const [sizes, setSizes] = useState([]);
 
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedPetType, setSelectedPetType] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleCityChange = (e) => {
     setSelectedCity(e.target.value);
@@ -54,6 +56,9 @@ const FindPet = ({ onSearch }) => {
   const handleGenderChange = (e) => {
     setSelectedGender(e.target.value);
   };
+  const handleSizeChange = (e) => {
+    setSelectedSize(e.target.value);
+  };
 
   const handleSearch = () => {
     const payload = {
@@ -61,6 +66,7 @@ const FindPet = ({ onSearch }) => {
       "attributes.origem": selectedOrigin,
       "attributes.tipo": selectedPetType,
       "attributes.sexo": selectedGender,
+      "attributes.porte": selectedSize,
     };
 
     const clean = (obj) => {
@@ -102,13 +108,21 @@ const FindPet = ({ onSearch }) => {
           })
         ).data.data.map((e) => ({ label: e, value: e }))
       );
-
       setGenders(
         (
           await PetsService.getDistinctFields({
             ...queryFilters,
             "attributes.sexo": undefined,
             field: "attributes.sexo",
+          })
+        ).data.data.map((e) => ({ label: e, value: e }))
+      );
+      setSizes(
+        (
+          await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.porte": undefined,
+            field: "attributes.porte",
           })
         ).data.data.map((e) => ({ label: e, value: e }))
       );
@@ -119,13 +133,14 @@ const FindPet = ({ onSearch }) => {
       "attributes.origem": selectedOrigin,
       "attributes.tipo": selectedPetType,
       "attributes.sexo": selectedGender,
+      "attributes.porte": selectedSize,
     };
     const clean = (obj) => {
       for (let propName in obj) obj[propName] ?? delete obj[propName];
       return obj;
     };
     getFieldsValue(clean(payload));
-  }, [selectedCity, selectedOrigin, selectedPetType, selectedGender]);
+  }, [selectedCity, selectedOrigin, selectedPetType, selectedGender, selectedSize]);
 
   return (
     <Box sx={{ my: 4 }}>
@@ -169,6 +184,13 @@ const FindPet = ({ onSearch }) => {
             handleChange={handleGenderChange}
             label="Sexo"
             items={genders}
+          />
+        </Grid>
+        <Grid item xs={4} md={4}>
+          <FindSelect
+            handleChange={handleSizeChange}
+            label="Porte"
+            items={sizes}
           />
         </Grid>
         <Grid item xs={12} md={4} mx={{ alignContent: "center" }}>
