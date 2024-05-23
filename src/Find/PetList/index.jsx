@@ -32,13 +32,48 @@ const Pet = ({ imgUrl, city, gender, handleClick }) => (
 const PetList = ({ searchParams }) => {
   const navigate = useNavigate();
   const [pets, setPets] = useState([]);
+  const [page, setPage] = useState(1);
+  const [currentSearchParams, setCurrentSearchParams] = useState({});
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight
+    ) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const getPetList = async () => {
-      const petList = (await PetsService.getPet(searchParams || {})).data.data;
-      setPets(petList);
+      const petList = (
+        await PetsService.getPet({ ...currentSearchParams, page })
+      ).data.data;
+      if (page != 1) setPets([...pets, ...petList]);
+      else setPets(petList);
     };
     getPetList();
+  }, [page, currentSearchParams]);
+
+  useEffect(() => {
+    function isSame(obj1, obj2) {
+      const obj1Keys = Object.keys(obj1);
+      const obj2Keys = Object.keys(obj2);
+
+      return (
+        obj1Keys.length === obj2Keys.length &&
+        obj1Keys.every((key) => obj1[key] === obj2[key])
+      );
+    }
+    if (!isSame(currentSearchParams, searchParams)) {
+      setPage(1);
+      setCurrentSearchParams(searchParams);
+    }
   }, [searchParams]);
 
   const handlePetClick = (id) => {
