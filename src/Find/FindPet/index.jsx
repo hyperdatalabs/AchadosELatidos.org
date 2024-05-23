@@ -18,6 +18,9 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
   <FormControl fullWidth>
     <InputLabel id="demo-simple-select-label">{label}</InputLabel>
     <Select label={label} onChange={handleChange} {...props}>
+      <MenuItem key={null} value={null}>
+        Não selecionado
+      </MenuItem>
       {items.map((item) => (
         <MenuItem key={item.value} value={item.value}>
           {item.label}
@@ -71,10 +74,12 @@ const FindPet = ({ onSearch }) => {
   };
 
   useEffect(() => {
-    const getFieldsValue = async () => {
+    const getFieldsValue = async (queryFilters) => {
       setCitys(
         (
           await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.cidade.data.attributes.nome": undefined,
             field: "attributes.cidade.data.attributes.nome",
           })
         ).data.data.map((e) => ({ label: e, value: e }))
@@ -82,6 +87,8 @@ const FindPet = ({ onSearch }) => {
       setOrigins(
         (
           await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.origem": undefined,
             field: "attributes.origem",
           })
         ).data.data.map((e) => ({ label: e, value: e }))
@@ -89,6 +96,8 @@ const FindPet = ({ onSearch }) => {
       setPetTypes(
         (
           await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.tipo": undefined,
             field: "attributes.tipo",
           })
         ).data.data.map((e) => ({ label: e, value: e }))
@@ -97,14 +106,26 @@ const FindPet = ({ onSearch }) => {
       setGenders(
         (
           await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.sexo": undefined,
             field: "attributes.sexo",
           })
         ).data.data.map((e) => ({ label: e, value: e }))
       );
     };
 
-    getFieldsValue();
-  }, []);
+    const payload = {
+      "attributes.cidade.data.attributes.nome": selectedCity,
+      "attributes.origem": selectedOrigin,
+      "attributes.tipo": selectedPetType,
+      "attributes.sexo": selectedGender,
+    };
+    const clean = (obj) => {
+      for (let propName in obj) obj[propName] ?? delete obj[propName];
+      return obj;
+    };
+    getFieldsValue(clean(payload));
+  }, [selectedCity, selectedOrigin, selectedPetType, selectedGender]);
 
   return (
     <Box sx={{ my: 4 }}>
