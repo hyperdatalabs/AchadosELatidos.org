@@ -55,6 +55,7 @@ const PetBreadcrumbs = ({ petType }) => (
 const Pet = () => {
   const { id } = useParams();
   const [pet, setPet] = useState({});
+  const SHARE_URL = "https://github.com";
 
   useEffect(() => {
     const getPetFromService = async (id) => {
@@ -118,37 +119,40 @@ const Pet = () => {
             >
               <LinkedIn />
             </LinkedinShareButton>
-            <PinterestShareButton>
-              <Pinterest
-                media={
-                  pet["attributes"] &&
-                  pet["attributes"]["foto"]["data"][0]["attributes"].url
-                }
-                url={window.location.href}
-                description="A achadoselatidos.org é um site que ajuda pessoas à encontrar seus animais queridos. Estou apoiando eles e te encaminho este animal para você visualizar"
-              />
+            <PinterestShareButton
+              media={
+                pet["attributes"] &&
+                pet["attributes"]["foto"]["data"][0]["attributes"].url
+              }
+              url={window.location.href}
+              description="A achadoselatidos.org é um site que ajuda pessoas à encontrar seus animais queridos. Estou apoiando eles e te encaminho este animal para você visualizar"
+            >
+              <Pinterest />
             </PinterestShareButton>
-            <RedditShareButton>
-              <Reddit url={window.location.href} title={window.location.href} />
+            <RedditShareButton
+              url={window.location.href}
+              title={window.location.href}
+            >
+              <Reddit />
             </RedditShareButton>
-            <TelegramShareButton>
-              <Telegram
-                url={window.location.href}
-                title={window.location.href}
-              />
+            <TelegramShareButton
+              url={window.location.href}
+              title={window.location.href}
+            >
+              <Telegram />
             </TelegramShareButton>
-            <TwitterShareButton>
-              <Twitter
-                title="Encontrei um animalzinho no achadoselatidos.org"
-                hashtags={["#achadoselatidos"]}
-                url={window.location.href}
-              />
+            <TwitterShareButton
+              title="Encontrei um animalzinho no achadoselatidos.org"
+              hashtags={["#achadoselatidos"]}
+              url={window.location.href}
+            >
+              <Twitter />
             </TwitterShareButton>
-            <WhatsappShareButton>
-              <WhatsApp
-                url={window.location.href}
-                title="Encontrei um animalzinho no achadoselatidos.org"
-              />
+            <WhatsappShareButton
+              url={SHARE_URL}
+              title="Encontrei um animalzinho no achadoselatidos.org"
+            >
+              <WhatsApp />
             </WhatsappShareButton>
           </Box>
           <Box
