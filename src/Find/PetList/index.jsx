@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PetsService from "../../shared/services/pets";
 
-const Pet = ({ imgUrl, city, gender, handleClick }) => (
+const Pet = ({ imgUrl, city, score, gender, handleClick }) => (
   <Grid item xs={12} md={4}>
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea onClick={handleClick}>
@@ -21,6 +21,11 @@ const Pet = ({ imgUrl, city, gender, handleClick }) => (
         <CardContent>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography>{city}</Typography>
+            {score && (
+              <Typography variant="caption" sx={{ alignContent: "center" }}>
+                {Math.round(score) * 100}% similar
+              </Typography>
+            )}
             <Chip label={gender} variant="outlined" />
           </Box>
         </CardContent>
@@ -29,10 +34,11 @@ const Pet = ({ imgUrl, city, gender, handleClick }) => (
   </Grid>
 );
 
-const PetList = ({ searchParams }) => {
+const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   const navigate = useNavigate();
   const [pets, setPets] = useState([]);
   const [page, setPage] = useState(1);
+  const [petsLoading, setPetsLoading] = useState(1);
   const [currentSearchParams, setCurrentSearchParams] = useState({});
 
   const handleScroll = () => {
@@ -51,14 +57,30 @@ const PetList = ({ searchParams }) => {
 
   useEffect(() => {
     const getPetList = async () => {
-      const petList = (
-        await PetsService.getPet({ ...currentSearchParams, page })
-      ).data.data;
+      let petList;
+      if (page != 1 && selectedImage) {
+        return;
+      }
+      setPetsLoading(true);
+      if (onChangeLoadingState) onChangeLoadingState(true);
+      if (!selectedImage) {
+        petList = (await PetsService.getPet({ ...currentSearchParams, page }))
+          .data.data;
+      } else {
+        petList = (
+          await PetsService.getWithImageMatch(
+            currentSearchParams,
+            selectedImage
+          )
+        ).data.data;
+      }
       if (page != 1) setPets([...pets, ...petList]);
       else setPets(petList);
+      setPetsLoading(false);
+      if (onChangeLoadingState) onChangeLoadingState(false);
     };
     getPetList();
-  }, [page, currentSearchParams]);
+  }, [page, currentSearchParams, selectedImage]);
 
   useEffect(() => {
     function isSame(obj1, obj2) {
@@ -83,7 +105,8 @@ const PetList = ({ searchParams }) => {
   return (
     <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }}>
       <Grid container spacing={2}>
-        {pets.length &&
+        {!petsLoading &&
+          pets.length &&
           pets.map((pet) => (
             <Pet
               gender={pet["attributes"]["sexo"]}
@@ -93,15 +116,17 @@ const PetList = ({ searchParams }) => {
                   "thumbnail"
                 ]["url"]
               }
+              score={pet["score"]}
               city={pet["attributes"]["cidade"]["data"]["attributes"]["nome"]}
               key={pet["_id"]}
             />
           ))}
-        {!pets.length && (
+        {!petsLoading && !pets.length && (
           <Box>
             Nenhum pet encontrado. Tente alterar seus critérios de busca
           </Box>
         )}
+        {petsLoading && <Box>Aguarde, carregando...</Box>}
       </Grid>
     </Box>
   );

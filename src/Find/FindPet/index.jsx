@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import { Search } from "@mui/icons-material";
+import { Image, Search } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   Grid,
   InputLabel,
@@ -10,7 +11,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PetsService from "../../shared/services/pets";
 
 // eslint-disable-next-line react/prop-types
@@ -30,18 +31,23 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
   </FormControl>
 );
 
-const FindPet = ({ onSearch }) => {
+const FindPet = ({ onSearch, loading }) => {
   const [citys, setCitys] = useState([]);
   const [origins, setOrigins] = useState([]);
   const [petTypes, setPetTypes] = useState([]);
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
 
+  const [showImageUpload, setshowImageUpload] = useState(false);
+
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedPetType, setSelectedPetType] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const hiddenFileInput = useRef(null);
 
   const handleCityChange = (e) => {
     setSelectedCity(e.target.value);
@@ -75,7 +81,7 @@ const FindPet = ({ onSearch }) => {
     };
 
     if (onSearch) {
-      onSearch(clean(payload));
+      onSearch(clean(payload), selectedImage);
     }
   };
 
@@ -139,8 +145,34 @@ const FindPet = ({ onSearch }) => {
       for (let propName in obj) obj[propName] ?? delete obj[propName];
       return obj;
     };
+
     getFieldsValue(clean(payload));
-  }, [selectedCity, selectedOrigin, selectedPetType, selectedGender, selectedSize]);
+    if (Object.values(clean(payload)).length < 4) {
+      setshowImageUpload(false);
+      handleImageClear();
+    } else {
+      setshowImageUpload(true);
+    }
+  }, [
+    selectedCity,
+    selectedOrigin,
+    selectedPetType,
+    selectedGender,
+    selectedSize,
+  ]);
+
+  const handleImageChange = (event) => {
+    const fileUploaded = event.target.files[0];
+    setSelectedImage(fileUploaded);
+  };
+
+  const handleImageClear = () => {
+    setSelectedImage(null);
+  };
+
+  const handleImageClick = () => {
+    hiddenFileInput.current.click();
+  };
 
   return (
     <Box sx={{ my: 4 }}>
@@ -158,6 +190,7 @@ const FindPet = ({ onSearch }) => {
               handleChange={handleCityChange}
               label="Cidade"
               items={citys}
+              disabled={loading}
             />
           </Grid>
         )}
@@ -167,6 +200,7 @@ const FindPet = ({ onSearch }) => {
               handleChange={handleOriginChange}
               label="Origem"
               items={origins}
+              disabled={loading}
             />
           </Grid>
         )}
@@ -176,6 +210,7 @@ const FindPet = ({ onSearch }) => {
               handleChange={handlePetTypeChange}
               label="Tipo de pet"
               items={petTypes}
+              disabled={loading}
             />
           </Grid>
         )}
@@ -184,21 +219,113 @@ const FindPet = ({ onSearch }) => {
             handleChange={handleGenderChange}
             label="Sexo"
             items={genders}
+            disabled={loading}
           />
         </Grid>
-        <Grid item xs={4} md={4}>
+        <Grid item xs={12} md={4}>
           <FindSelect
             handleChange={handleSizeChange}
             label="Porte"
             items={sizes}
+            disabled={loading}
           />
         </Grid>
-        <Grid item xs={12} md={4} mx={{ alignContent: "center" }}>
+        <Grid item xs={12}>
+          <Divider>
+            <Typography variant="overline">pesquise por imagem</Typography>
+          </Divider>
+        </Grid>
+        <Grid item xs={12} onClick={handleImageClick}>
+          {!showImageUpload && (
+            <Box sx={{ textAlign: "center", my: 2 }}>
+              <Typography variant="caption">
+                É necessário ao menos 4 filtros para utilizar a busca por
+                imagem. <br />
+                Estamos trabalhando incessantemente para evoluir a busca e
+                trazer a melhor experiência para você!!
+              </Typography>
+            </Box>
+          )}
+          {showImageUpload && (
+            <Grid
+              sx={{
+                cursor: !loading && "pointer",
+                opacity: loading ? 0.4 : 1,
+                my: 2,
+                "&:hover": {
+                  opacity: !loading && 0.8,
+                },
+              }}
+              container
+            >
+              <Grid item xs>
+                <Box fullWidth fullHeight>
+                  <Box sx={{ textAlign: "center" }}>
+                    {!selectedImage && (
+                      <Image sx={{ fontSize: "10rem", border: "1px dashed" }} />
+                    )}
+                    {selectedImage && (
+                      <Box
+                        sx={{
+                          width: "10rem",
+                          objectFit: "cover",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                        }}
+                        component="img"
+                        src={URL.createObjectURL(selectedImage)}
+                      />
+                    )}
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid
+                sx={{
+                  textAlign: "center",
+                  alignContent: "center",
+                }}
+                item
+                xs
+              >
+                {!selectedImage && (
+                  <>
+                    <Typography>Selecione uma imagem</Typography>
+                    <Typography variant="caption">
+                      Sua imagem deverá ter no máximo 10 MB, e ter como extensão
+                      (parte final do nome): .png, .jpg, .jpeg, .bmp, .gif
+                    </Typography>
+                  </>
+                )}
+                {selectedImage && (
+                  <>
+                    <Typography>Agora basta clicar em buscar!</Typography>
+                    <Typography variant="caption">
+                      Você também pode remover o filtro no botão abaixo
+                    </Typography>
+                    <Box>
+                      <Button sx={{ my: 2 }} onClick={handleImageClear}>
+                        REMOVER IMAGEM
+                      </Button>
+                    </Box>
+                  </>
+                )}
+              </Grid>
+              <input
+                hidden
+                onChange={handleImageChange}
+                type="file"
+                ref={hiddenFileInput}
+              />
+            </Grid>
+          )}
+        </Grid>
+        <Grid item xs={12} md={12} mx={{ alignContent: "center" }}>
           <Button
             fullWidth
             variant="outlined"
             startIcon={<Search />}
             onClick={handleSearch}
+            disabled={loading}
           >
             Buscar
           </Button>
