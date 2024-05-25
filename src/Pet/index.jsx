@@ -85,7 +85,7 @@ const Pet = () => {
               component="img"
               sx={{ maxWidth: "100%", my: 2 }}
               loading="lazy"
-              src={pet["attributes"]["foto"]["data"][0]["attributes"].url}
+              src={pet["attributes"]["foto"]["data"][0]["attributes"].gcs_foto_url}
             />
           </Box>
           <Box sx={{ textAlign: "center", my: 2 }}>
@@ -122,7 +122,7 @@ const Pet = () => {
             <PinterestShareButton
               media={
                 pet["attributes"] &&
-                pet["attributes"]["foto"]["data"][0]["attributes"].url
+                pet["attributes"]["foto"]["data"][0]["attributes"].gcs_foto_url
               }
               url={window.location.href}
               description="A achadoselatidos.org é um site que ajuda pessoas à encontrar seus animais queridos. Estou apoiando eles e te encaminho este animal para você visualizar"

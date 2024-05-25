@@ -50,7 +50,6 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.offsetHeight * 0.9
     ) {
-      console.log("setpage", page + 1);
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -63,7 +62,6 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   useEffect(() => {
     const getPetList = async () => {
       let petList;
-      console.log(page, selectedImage);
       if (page != 1 && selectedImage) {
         return;
       }
@@ -120,9 +118,7 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
               gender={pet["attributes"]["sexo"]}
               handleClick={() => handlePetClick(pet["_id"])}
               imgUrl={
-                pet["attributes"]["foto"]["data"][0]["attributes"]["formats"][
-                  "thumbnail"
-                ]["url"]
+                pet["attributes"]["foto"]["data"][0]["attributes"]["gcs_foto_url"]
               }
               score={pet["score"]}
               city={pet["attributes"]["cidade"]["data"]["attributes"]["nome"]}
