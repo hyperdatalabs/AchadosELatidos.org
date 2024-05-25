@@ -171,7 +171,9 @@ const FindPet = ({ onSearch, loading }) => {
   };
 
   const handleImageClick = () => {
-    hiddenFileInput.current.click();
+    if (!loading) {
+      hiddenFileInput.current.click();
+    }
   };
 
   return (
@@ -303,7 +305,11 @@ const FindPet = ({ onSearch, loading }) => {
                       Você também pode remover o filtro no botão abaixo
                     </Typography>
                     <Box>
-                      <Button sx={{ my: 2 }} onClick={handleImageClear}>
+                      <Button
+                        disabled={loading}
+                        sx={{ my: 2 }}
+                        onClick={handleImageClear}
+                      >
                         REMOVER IMAGEM
                       </Button>
                     </Box>

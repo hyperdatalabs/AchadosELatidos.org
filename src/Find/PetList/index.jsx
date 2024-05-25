@@ -40,12 +40,9 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   const [page, setPage] = useState(1);
   const [petsLoading, setPetsLoading] = useState(1);
   const [currentSearchParams, setCurrentSearchParams] = useState({});
+  const [currentImage, setCurrentImage] = useState(null);
 
   const handleScroll = () => {
-    console.log(
-      window.innerHeight + document.documentElement.scrollTop,
-      document.documentElement.offsetHeight
-    );
     if (
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.offsetHeight * 0.9
@@ -62,22 +59,19 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   useEffect(() => {
     const getPetList = async () => {
       let petList;
-      if (page != 1 && selectedImage) {
+      if (page != 1 && currentImage) {
         return;
       }
       if (page == 1) {
         setPetsLoading(true);
       }
       if (onChangeLoadingState) onChangeLoadingState(true);
-      if (!selectedImage) {
+      if (!currentImage) {
         petList = (await PetsService.getPet({ ...currentSearchParams, page }))
           .data.data;
       } else {
         petList = (
-          await PetsService.getWithImageMatch(
-            currentSearchParams,
-            selectedImage
-          )
+          await PetsService.getWithImageMatch(currentSearchParams, currentImage)
         ).data.data;
       }
       if (petList.length) {
@@ -88,7 +82,7 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
       if (onChangeLoadingState) onChangeLoadingState(false);
     };
     getPetList();
-  }, [page, currentSearchParams, selectedImage]);
+  }, [page, currentSearchParams, currentImage]);
 
   useEffect(() => {
     function isSame(obj1, obj2) {
@@ -100,11 +94,15 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
         obj1Keys.every((key) => obj1[key] === obj2[key])
       );
     }
+    if (selectedImage != currentImage) {
+      setCurrentImage(selectedImage);
+      setPage(1);
+    }
     if (!isSame(currentSearchParams, searchParams)) {
       setPage(1);
       setCurrentSearchParams(searchParams);
     }
-  }, [searchParams]);
+  }, [searchParams, selectedImage]);
 
   const handlePetClick = (id) => {
     navigate(`/pet/${id}`);
