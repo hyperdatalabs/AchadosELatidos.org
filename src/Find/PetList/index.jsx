@@ -80,8 +80,10 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
           )
         ).data.data;
       }
-      if (page != 1) setPets([...pets, ...petList]);
-      else setPets(petList);
+      if (petList.length) {
+        if (page != 1) setPets([...pets, ...petList]);
+        else setPets(petList);
+      }
       setPetsLoading(false);
       if (onChangeLoadingState) onChangeLoadingState(false);
     };
@@ -118,7 +120,9 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
               gender={pet["attributes"]["sexo"]}
               handleClick={() => handlePetClick(pet["_id"])}
               imgUrl={
-                pet["attributes"]["foto"]["data"][0]["attributes"]["gcs_foto_url"]
+                pet["attributes"]["foto"]["data"][0]["attributes"][
+                  "gcs_foto_url"
+                ]
               }
               score={pet["score"]}
               city={pet["attributes"]["cidade"]["data"]["attributes"]["nome"]}
