@@ -42,10 +42,15 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   const [currentSearchParams, setCurrentSearchParams] = useState({});
 
   const handleScroll = () => {
+    console.log(
+      window.innerHeight + document.documentElement.scrollTop,
+      document.documentElement.offsetHeight
+    );
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight
+      document.documentElement.offsetHeight * 0.9
     ) {
+      console.log("setpage", page + 1);
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -58,10 +63,13 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   useEffect(() => {
     const getPetList = async () => {
       let petList;
+      console.log(page, selectedImage);
       if (page != 1 && selectedImage) {
         return;
       }
-      setPetsLoading(true);
+      if (page == 1) {
+        setPetsLoading(true);
+      }
       if (onChangeLoadingState) onChangeLoadingState(true);
       if (!selectedImage) {
         petList = (await PetsService.getPet({ ...currentSearchParams, page }))

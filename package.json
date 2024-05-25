@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "react-share": "^5.1.0",
+    "sweetalert2": "^11.11.0",
     "vite-plugin-svgr": "^4.2.0"
   },
   "engines": {
