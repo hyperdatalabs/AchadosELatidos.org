@@ -23,7 +23,7 @@ const Pet = ({ imgUrl, city, score, gender, handleClick }) => (
             <Typography>{city}</Typography>
             {score && (
               <Typography variant="caption" sx={{ alignContent: "center" }}>
-                {Math.round(score) * 100}% similar
+                {Math.round(score * 100)}% similar
               </Typography>
             )}
             <Chip label={gender} variant="outlined" />
