@@ -1,19 +1,17 @@
 /* eslint-disable react/no-unknown-property */
+import { Instagram, WhatsApp } from "@mui/icons-material";
 import {
   Alert,
   Box,
   Button,
   Grid,
-  IconButton,
   Link,
   Snackbar,
   Typography,
 } from "@mui/material";
-import Layout from "../shared/Layout";
-import { Close, Instagram, WhatsApp } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import React from "react";
 import { useLocation } from "react-router-dom";
+import Layout from "../shared/Layout";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
@@ -35,18 +33,6 @@ const Home = () => {
     setOpen(false);
   };
 
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <Close fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
   return (
     <div>
       <Layout>

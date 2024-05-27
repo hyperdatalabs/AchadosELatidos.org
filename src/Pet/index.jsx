@@ -207,10 +207,14 @@ const Pet = () => {
                 <Typography>Mais informações</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>Nome: {pet["attributes"]["nome"]}</Typography>
                 <Typography>
-                  Contato: {pet["attributes"]["nomeContato"]} (
-                  {pet["attributes"]["telefoneContato"]})
+                  Nome: {pet["attributes"]["nome"] || "Não informado"}
+                </Typography>
+                <Typography>
+                  Contato: {pet["attributes"]["nomeContato"]}{" "}
+                  {pet["attributes"]["telefoneContato"]
+                    ? `(${pet["attributes"]["telefoneContato"]})`
+                    : ""}
                 </Typography>
                 <Typography>Origem: {pet["attributes"]["origem"]}</Typography>
                 <Typography>

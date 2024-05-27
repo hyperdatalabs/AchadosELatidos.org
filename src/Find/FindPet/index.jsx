@@ -241,7 +241,7 @@ const FindPet = ({ onSearch, loading }) => {
           {!showImageUpload && (
             <Box sx={{ textAlign: "center", my: 2 }}>
               <Typography variant="caption">
-                É necessário ao menos 2 filtros para utilizar a busca por
+                São necessários ao menos 2 filtros para utilizar a busca por
                 imagem. <br />
                 Estamos trabalhando incessantemente para evoluir a busca e
                 trazer a melhor experiência para você!!

@@ -45,7 +45,7 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight * 0.9
+      document.documentElement.offsetHeight - 1
     ) {
       setPage((prevPage) => prevPage + 1);
     }
