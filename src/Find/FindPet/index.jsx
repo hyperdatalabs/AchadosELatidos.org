@@ -294,7 +294,7 @@ const FindPet = ({ onSearch, loading }) => {
                     <Typography>Selecione uma imagem</Typography>
                     <Typography variant="caption">
                       Sua imagem deverá ter no máximo 10 MB, e ter como extensão
-                      (parte final do nome): .png, .jpg, .jpeg, .bmp, .gif
+                      (parte final do nome): .png, .jpg e .jpeg
                     </Typography>
                   </>
                 )}
@@ -320,6 +320,7 @@ const FindPet = ({ onSearch, loading }) => {
                 hidden
                 onChange={handleImageChange}
                 type="file"
+                accept=".jpg,.jpeg,.png"
                 ref={hiddenFileInput}
               />
             </Grid>
