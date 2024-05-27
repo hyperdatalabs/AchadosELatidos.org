@@ -147,7 +147,7 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     getFieldsValue(clean(payload));
-    if (Object.values(clean(payload)).length < 4) {
+    if (Object.values(clean(payload)).length < 2) {
       setshowImageUpload(false);
       handleImageClear();
     } else {
@@ -241,7 +241,7 @@ const FindPet = ({ onSearch, loading }) => {
           {!showImageUpload && (
             <Box sx={{ textAlign: "center", my: 2 }}>
               <Typography variant="caption">
-                É necessário ao menos 4 filtros para utilizar a busca por
+                É necessário ao menos 2 filtros para utilizar a busca por
                 imagem. <br />
                 Estamos trabalhando incessantemente para evoluir a busca e
                 trazer a melhor experiência para você!!
