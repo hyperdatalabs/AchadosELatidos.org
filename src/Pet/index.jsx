@@ -26,7 +26,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -55,14 +55,19 @@ const PetBreadcrumbs = ({ petType }) => (
 const Pet = () => {
   const { id } = useParams();
   const [pet, setPet] = useState({});
+  const navigate = useNavigate();
   const SHARE_URL = "https://github.com";
 
   useEffect(() => {
     const getPetFromService = async (id) => {
-      const petsResponse = (await PetsService.getPet({ _id: id }))["data"][
-        "data"
-      ][0];
-      setPet(petsResponse);
+      try {
+        const petsResponse = (await PetsService.getPet({ _id: id }))["data"][
+          "data"
+        ][0];
+        setPet(petsResponse);
+      } catch {
+        navigate(encodeURI("/?error=Pet infelizmente não encontrado"));
+      }
     };
     getPetFromService(id);
   }, []);
@@ -85,7 +90,9 @@ const Pet = () => {
               component="img"
               sx={{ maxWidth: "100%", my: 2 }}
               loading="lazy"
-              src={pet["attributes"]["foto"]["data"][0]["attributes"].gcs_foto_url}
+              src={
+                pet["attributes"]["foto"]["data"][0]["attributes"].gcs_foto_url
+              }
             />
           </Box>
           <Box sx={{ textAlign: "center", my: 2 }}>

@@ -20,7 +20,7 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
     <InputLabel id="demo-simple-select-label">{label}</InputLabel>
     <Select label={label} onChange={handleChange} {...props}>
       <MenuItem key={null} value={null}>
-        Não selecionado
+        Todos
       </MenuItem>
       {items.map((item) => (
         <MenuItem key={item.value} value={item.value}>
