@@ -10,6 +10,12 @@ import Submit from "./Submit";
 
 const darkTheme = createTheme({
   palette: {
+    primary: {
+      main: "#65E2AD",
+    },
+    secondary: {
+      main: '#E59644?',
+    },
     mode: "dark",
   },
 });
