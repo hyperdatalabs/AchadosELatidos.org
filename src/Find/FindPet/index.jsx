@@ -37,6 +37,7 @@ const FindPet = ({ onSearch, loading }) => {
   const [petTypes, setPetTypes] = useState([]);
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [status, setStatus] = useState([]);
 
   const [showImageUpload, setshowImageUpload] = useState(true);
 
@@ -45,6 +46,7 @@ const FindPet = ({ onSearch, loading }) => {
   const [selectedPetType, setSelectedPetType] = useState(null);
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const hiddenFileInput = useRef(null);
@@ -65,6 +67,9 @@ const FindPet = ({ onSearch, loading }) => {
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
   };
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
 
   const handleSearch = () => {
     const payload = {
@@ -73,6 +78,7 @@ const FindPet = ({ onSearch, loading }) => {
       "attributes.tipo": selectedPetType,
       "attributes.sexo": selectedGender,
       "attributes.porte": selectedSize,
+      "attributes.situacao": selectedStatus,
     };
 
     const clean = (obj) => {
@@ -94,7 +100,9 @@ const FindPet = ({ onSearch, loading }) => {
             "attributes.cidade.data.attributes.nome": undefined,
             field: "attributes.cidade.data.attributes.nome",
           })
-        ).data.data.map((e) => ({ label: e, value: e }))
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
       );
       setOrigins(
         (
@@ -103,7 +111,9 @@ const FindPet = ({ onSearch, loading }) => {
             "attributes.origem": undefined,
             field: "attributes.origem",
           })
-        ).data.data.map((e) => ({ label: e, value: e }))
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
       );
       setPetTypes(
         (
@@ -112,7 +122,9 @@ const FindPet = ({ onSearch, loading }) => {
             "attributes.tipo": undefined,
             field: "attributes.tipo",
           })
-        ).data.data.map((e) => ({ label: e, value: e }))
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
       );
       setGenders(
         (
@@ -121,7 +133,9 @@ const FindPet = ({ onSearch, loading }) => {
             "attributes.sexo": undefined,
             field: "attributes.sexo",
           })
-        ).data.data.map((e) => ({ label: e, value: e }))
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
       );
       setSizes(
         (
@@ -130,7 +144,20 @@ const FindPet = ({ onSearch, loading }) => {
             "attributes.porte": undefined,
             field: "attributes.porte",
           })
-        ).data.data.map((e) => ({ label: e, value: e }))
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
+      );
+      setStatus(
+        (
+          await PetsService.getDistinctFields({
+            ...queryFilters,
+            "attributes.situacao": undefined,
+            field: "attributes.situacao",
+          })
+        ).data.data
+          .map((e) => ({ label: e, value: e }))
+          .filter((e) => ![null, undefined, ""].includes(e.label))
       );
     };
 
@@ -140,6 +167,7 @@ const FindPet = ({ onSearch, loading }) => {
       "attributes.tipo": selectedPetType,
       "attributes.sexo": selectedGender,
       "attributes.porte": selectedSize,
+      "attributes.situacao": selectedStatus,
     };
     const clean = (obj) => {
       for (let propName in obj) obj[propName] ?? delete obj[propName];
@@ -159,6 +187,7 @@ const FindPet = ({ onSearch, loading }) => {
     selectedPetType,
     selectedGender,
     selectedSize,
+    selectedStatus,
   ]);
 
   const handleImageChange = (event) => {
@@ -216,22 +245,36 @@ const FindPet = ({ onSearch, loading }) => {
             />
           </Grid>
         )}
-        <Grid item xs={4} md={4}>
-          <FindSelect
-            handleChange={handleGenderChange}
-            label="Sexo"
-            items={genders}
-            disabled={loading}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <FindSelect
-            handleChange={handleSizeChange}
-            label="Porte"
-            items={sizes}
-            disabled={loading}
-          />
-        </Grid>
+        {genders && genders.length > 0 && (
+          <Grid item xs={4} md={4}>
+            <FindSelect
+              handleChange={handleGenderChange}
+              label="Sexo"
+              items={genders}
+              disabled={loading}
+            />
+          </Grid>
+        )}
+        {sizes && sizes.length > 0 && (
+          <Grid item xs={12} md={4}>
+            <FindSelect
+              handleChange={handleSizeChange}
+              label="Porte"
+              items={sizes}
+              disabled={loading}
+            />
+          </Grid>
+        )}
+        {status && status.length > 0 && (
+          <Grid item xs={12} md={4}>
+            <FindSelect
+              handleChange={handleStatusChange}
+              label="Situação"
+              items={status}
+              disabled={loading}
+            />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Divider>
             <Typography variant="overline">pesquise por imagem</Typography>

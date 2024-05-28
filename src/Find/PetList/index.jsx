@@ -20,7 +20,7 @@ const Pet = ({ imgUrl, city, score, gender, handleClick }) => (
         <CardMedia sx={{ height: 200 }} image={imgUrl} title="green iguana" />
         <CardContent>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography>{city}</Typography>
+            <Typography sx={{ alignContent: "center" }}>{city}</Typography>
             {score != undefined && score != null && (
               <Typography variant="caption" sx={{ alignContent: "center" }}>
                 {Math.round(score * 100)}% similar
