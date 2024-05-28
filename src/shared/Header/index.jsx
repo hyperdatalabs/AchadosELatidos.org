@@ -18,6 +18,7 @@ import { ReactComponent as Logo } from "../../assets/logo-nobg.svg";
 const pages = [
   { url: "/", label: "Início" },
   { url: "/find", label: "Encontre seu pet" },
+  { url: "/submit", label: "Cadastrar pet" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -66,7 +67,7 @@ function Header() {
               textDecoration: "none",
             }}
           >
-            ACHADOSELATIDOS
+            ACHADOS E LATIDOS
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
