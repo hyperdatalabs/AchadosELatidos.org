@@ -31,6 +31,8 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
   </FormControl>
 );
 
+const HIDE_OPTIONS_LIST = [null, undefined, "", "Não sei", "Não identificado", "Não informado"];
+
 const FindPet = ({ onSearch, loading }) => {
   const [citys, setCitys] = useState([]);
   const [origins, setOrigins] = useState([]);
@@ -102,7 +104,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
       setOrigins(
         (
@@ -113,7 +115,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
       setPetTypes(
         (
@@ -124,7 +126,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
       setGenders(
         (
@@ -135,7 +137,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
       setSizes(
         (
@@ -146,7 +148,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
       setStatus(
         (
@@ -157,7 +159,7 @@ const FindPet = ({ onSearch, loading }) => {
           })
         ).data.data
           .map((e) => ({ label: e, value: e }))
-          .filter((e) => ![null, undefined, ""].includes(e.label))
+          .filter((e) => !HIDE_OPTIONS_LIST.includes(e.label))
       );
     };
 
