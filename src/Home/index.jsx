@@ -83,13 +83,13 @@ const Home = () => {
                   </Link>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                {/* <Grid item xs={12} md={6}>
                   <Link href="https://wa.me/5521994814666">
                     <Button fullWidth variant="outlined">
                       QUERO FALAR SOBRE UM PET
                     </Button>
                   </Link>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Box sx={{ textAlign: "center" }}>
                 <Button
