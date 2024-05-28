@@ -38,7 +38,7 @@ const FindPet = ({ onSearch, loading }) => {
   const [genders, setGenders] = useState([]);
   const [sizes, setSizes] = useState([]);
 
-  const [showImageUpload, setshowImageUpload] = useState(false);
+  const [showImageUpload, setshowImageUpload] = useState(true);
 
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedOrigin, setSelectedOrigin] = useState(null);
@@ -147,12 +147,12 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     getFieldsValue(clean(payload));
-    if (Object.values(clean(payload)).length < 2) {
-      setshowImageUpload(false);
-      handleImageClear();
-    } else {
-      setshowImageUpload(true);
-    }
+    // if (Object.values(clean(payload)).length < 2) {
+    //   setshowImageUpload(false);
+    //   handleImageClear();
+    // } else {
+    //   setshowImageUpload(true);
+    // }
   }, [
     selectedCity,
     selectedOrigin,
@@ -238,7 +238,7 @@ const FindPet = ({ onSearch, loading }) => {
           </Divider>
         </Grid>
         <Grid item xs={12} onClick={handleImageClick}>
-          {!showImageUpload && (
+          {/* {!showImageUpload && (
             <Box sx={{ textAlign: "center", my: 2 }}>
               <Typography variant="caption">
                 São necessários ao menos 2 filtros para utilizar a busca por
@@ -247,7 +247,7 @@ const FindPet = ({ onSearch, loading }) => {
                 trazer a melhor experiência para você!!
               </Typography>
             </Box>
-          )}
+          )} */}
           {showImageUpload && (
             <Grid
               sx={{
