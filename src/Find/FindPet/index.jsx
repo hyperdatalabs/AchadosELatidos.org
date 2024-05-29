@@ -33,7 +33,7 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
       {items.map((item) => (
         <MenuItem key={item.value} value={item.value}>
           <Checkbox
-            checked={!!props.value.find((el) => el.value == item.value)}
+            checked={!!props.value.find((el) => el == item.value)}
           />
           <ListItemText primary={item.label} />
         </MenuItem>
@@ -74,6 +74,7 @@ const FindPet = ({ onSearch, loading }) => {
   const hiddenFileInput = useRef(null);
 
   const handleFilterChange = (e, setFunction) => {
+    console.log(e.target.value);
     const {
       target: { value },
     } = e;
