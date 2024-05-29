@@ -31,7 +31,15 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
   </FormControl>
 );
 
-const HIDE_OPTIONS_LIST = [null, undefined, "", "Não sei", "Não identificado", "Não informado"];
+const HIDE_OPTIONS_LIST = [
+  null,
+  undefined,
+  "",
+  "Não sei",
+  "Não identificado",
+  "Não informado",
+  "Não informada",
+];
 
 const FindPet = ({ onSearch, loading }) => {
   const [citys, setCitys] = useState([]);
@@ -42,6 +50,7 @@ const FindPet = ({ onSearch, loading }) => {
   const [status, setStatus] = useState([]);
 
   const [showImageUpload, setshowImageUpload] = useState(true);
+  const [draggingUpload, setDraggingUpload] = useState(false);
 
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedOrigin, setSelectedOrigin] = useState(null);
@@ -207,6 +216,17 @@ const FindPet = ({ onSearch, loading }) => {
     }
   };
 
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    setDraggingUpload(false);
+    if (e.dataTransfer.files.length) setSelectedImage(e.dataTransfer.files[0]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDraggingUpload(true);
+  };
+
   return (
     <Box sx={{ my: 4 }}>
       <Box sx={{ textAlign: "center" }}>
@@ -304,6 +324,9 @@ const FindPet = ({ onSearch, loading }) => {
                 },
               }}
               container
+              onDragLeave={() => setDraggingUpload(false)}
+              onDragOver={handleDragOver}
+              onDrop={handleFileDrop}
             >
               <Grid item xs>
                 <Box fullWidth fullHeight>
@@ -334,13 +357,18 @@ const FindPet = ({ onSearch, loading }) => {
                 item
                 xs
               >
-                {!selectedImage && (
+                {!selectedImage && !draggingUpload && (
                   <>
                     <Typography>Selecione uma imagem</Typography>
                     <Typography variant="caption">
                       Sua imagem deverá ter no máximo 10 MB, e ter como extensão
                       (parte final do nome): .png, .jpg e .jpeg
                     </Typography>
+                  </>
+                )}
+                {draggingUpload && (
+                  <>
+                    <Typography>Solte seu arquivo aqui dentro</Typography>
                   </>
                 )}
                 {selectedImage && (
