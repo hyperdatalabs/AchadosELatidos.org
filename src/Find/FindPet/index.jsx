@@ -17,7 +17,7 @@ import PetsService from "../../shared/services/pets";
 // eslint-disable-next-line react/prop-types
 const FindSelect = ({ label, items, handleChange, ...props }) => (
   <FormControl fullWidth>
-    <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+    <InputLabel>{label}</InputLabel>
     <Select label={label} onChange={handleChange} {...props}>
       <MenuItem key={null} value={null}>
         Todos
@@ -216,7 +216,7 @@ const FindPet = ({ onSearch, loading }) => {
           critérios maior a chance de você encontrar!!
         </Typography>
       </Box>
-      <Grid container spacing={2} sx={{ my: 2 }}>
+      <Grid container spacing={2} sx={{ my: 2 }} id="find">
         {citys && citys.length > 0 && (
           <Grid item xs={12} md={4}>
             <FindSelect

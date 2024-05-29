@@ -7,10 +7,11 @@ import {
   CardMedia,
   Chip,
   Grid,
+  Link,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import PetsService from "../../shared/services/pets";
 
 const Pet = ({ imgUrl, city, score, gender, handleClick }) => (
@@ -72,7 +73,7 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
       } else {
         petList = (
           await PetsService.getWithImageMatch(currentSearchParams, currentImage)
-        ).data.data;
+        ).data.data.filter((pet) => !!pet["score"]);
       }
       if (petList.length) {
         if (page != 1) setPets([...pets, ...petList]);
@@ -109,32 +110,42 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }}>
-      <Grid container spacing={2}>
-        {!petsLoading &&
-          pets.length &&
-          pets.map((pet) => (
-            <Pet
-              gender={pet["attributes"]["sexo"]}
-              handleClick={() => handlePetClick(pet["_id"])}
-              imgUrl={
-                pet["attributes"]["foto"]["data"][0]["attributes"][
-                  "gcs_foto_url"
-                ]
-              }
-              score={pet["score"]}
-              city={pet["attributes"]["cidade"]["data"]["attributes"]["nome"]}
-              key={pet["_id"]}
-            />
-          ))}
-        {!petsLoading && !pets.length && (
-          <Box>
-            Nenhum pet encontrado. Tente alterar seus critérios de busca
+    <>
+      <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }}>
+        <Grid container spacing={2}>
+          {!petsLoading &&
+            pets.length &&
+            pets.map((pet) => (
+              <Pet
+                gender={pet["attributes"]["sexo"]}
+                handleClick={() => handlePetClick(pet["_id"])}
+                imgUrl={
+                  pet["attributes"]["foto"]["data"][0]["attributes"][
+                    "gcs_foto_url"
+                  ]
+                }
+                score={pet["score"]}
+                city={pet["attributes"]["cidade"]["data"]["attributes"]["nome"]}
+                key={pet["_id"]}
+              />
+            ))}
+          {!petsLoading && !pets.length && (
+            <Box>
+              Nenhum pet encontrado. Tente alterar seus critérios de busca
+            </Box>
+          )}
+          {petsLoading && <Box>Aguarde, carregando...</Box>}
+        </Grid>
+      </Box>
+      {!petsLoading && pets.length && (
+        <Grid>
+          <Box sx={{ my: 2, textAlign: "center" }} fullWidth>
+            Ainda não encontrou seu pet?{" "}
+            <Link href="#find">Tente alterar os critérios de busca</Link>.
           </Box>
-        )}
-        {petsLoading && <Box>Aguarde, carregando...</Box>}
-      </Grid>
-    </Box>
+        </Grid>
+      )}
+    </>
   );
 };
 
