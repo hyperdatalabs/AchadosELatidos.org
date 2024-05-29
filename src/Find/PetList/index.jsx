@@ -111,7 +111,7 @@ const PetList = ({ searchParams, selectedImage, onChangeLoadingState }) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }}>
+      <Box sx={{ display: "flex", textAlign: "-webkit-center", mb: 2 }} id="pets">
         <Grid container spacing={2}>
           {!petsLoading &&
             pets.length &&

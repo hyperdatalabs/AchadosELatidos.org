@@ -3,10 +3,12 @@ import { Image, Search } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   FormControl,
   Grid,
   InputLabel,
+  ListItemText,
   MenuItem,
   Select,
   Typography,
@@ -18,13 +20,22 @@ import PetsService from "../../shared/services/pets";
 const FindSelect = ({ label, items, handleChange, ...props }) => (
   <FormControl fullWidth>
     <InputLabel>{label}</InputLabel>
-    <Select label={label} onChange={handleChange} {...props}>
-      <MenuItem key={null} value={null}>
+    <Select
+      label={label}
+      onChange={handleChange}
+      multiple
+      renderValue={(selected) => selected.sort().join(", ")}
+      {...props}
+    >
+      <MenuItem key={null} value={[]}>
         Todos
       </MenuItem>
       {items.map((item) => (
         <MenuItem key={item.value} value={item.value}>
-          {item.label}
+          <Checkbox
+            checked={!!props.value.find((el) => el.value == item.value)}
+          />
+          <ListItemText primary={item.label} />
         </MenuItem>
       ))}
     </Select>
@@ -52,44 +63,60 @@ const FindPet = ({ onSearch, loading }) => {
   const [showImageUpload, setshowImageUpload] = useState(true);
   const [draggingUpload, setDraggingUpload] = useState(false);
 
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedOrigin, setSelectedOrigin] = useState(null);
-  const [selectedPetType, setSelectedPetType] = useState(null);
-  const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedCity, setSelectedCity] = useState([]);
+  const [selectedOrigin, setSelectedOrigin] = useState([]);
+  const [selectedPetType, setSelectedPetType] = useState([]);
+  const [selectedGender, setSelectedGender] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const hiddenFileInput = useRef(null);
 
+  const handleFilterChange = (e, setFunction) => {
+    const {
+      target: { value },
+    } = e;
+    if (value.some((el) => Array.isArray(el))) {
+      setFunction([]);
+      return;
+    }
+
+    setFunction(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
   const handleCityChange = (e) => {
-    setSelectedCity(e.target.value);
+    handleFilterChange(e, setSelectedCity);
   };
 
   const handleOriginChange = (e) => {
-    setSelectedOrigin(e.target.value);
+    handleFilterChange(e, setSelectedOrigin);
   };
+
   const handlePetTypeChange = (e) => {
-    setSelectedPetType(e.target.value);
+    handleFilterChange(e, setSelectedPetType);
   };
   const handleGenderChange = (e) => {
-    setSelectedGender(e.target.value);
+    handleFilterChange(e, setSelectedGender);
   };
   const handleSizeChange = (e) => {
-    setSelectedSize(e.target.value);
+    handleFilterChange(e, setSelectedSize);
   };
   const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
+    handleFilterChange(e, setSelectedStatus);
   };
 
   const handleSearch = () => {
     const payload = {
-      "attributes.cidade.data.attributes.nome": selectedCity,
-      "attributes.origem": selectedOrigin,
-      "attributes.tipo": selectedPetType,
-      "attributes.sexo": selectedGender,
-      "attributes.porte": selectedSize,
-      "attributes.situacao": selectedStatus,
+      "attributes.cidade.data.attributes.nome": { $in: selectedCity },
+      "attributes.origem": { $in: selectedOrigin },
+      "attributes.tipo": { $in: selectedPetType },
+      "attributes.sexo": { $in: selectedGender },
+      "attributes.porte": { $in: selectedSize },
+      "attributes.situacao": { $in: selectedStatus },
     };
 
     const clean = (obj) => {
@@ -98,6 +125,7 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     if (onSearch) {
+      document.querySelector("#pets").scrollIntoView();
       onSearch(clean(payload), selectedImage);
     }
   };
@@ -173,12 +201,12 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     const payload = {
-      "attributes.cidade.data.attributes.nome": selectedCity,
-      "attributes.origem": selectedOrigin,
-      "attributes.tipo": selectedPetType,
-      "attributes.sexo": selectedGender,
-      "attributes.porte": selectedSize,
-      "attributes.situacao": selectedStatus,
+      "attributes.cidade.data.attributes.nome": { $in: selectedCity },
+      "attributes.origem": { $in: selectedOrigin },
+      "attributes.tipo": { $in: selectedPetType },
+      "attributes.sexo": { $in: selectedGender },
+      "attributes.porte": { $in: selectedSize },
+      "attributes.situacao": { $in: selectedStatus },
     };
     const clean = (obj) => {
       for (let propName in obj) obj[propName] ?? delete obj[propName];
@@ -244,6 +272,7 @@ const FindPet = ({ onSearch, loading }) => {
               label="Cidade"
               items={citys}
               disabled={loading}
+              value={selectedCity}
             />
           </Grid>
         )}
@@ -254,6 +283,7 @@ const FindPet = ({ onSearch, loading }) => {
               label="Origem"
               items={origins}
               disabled={loading}
+              value={selectedOrigin}
             />
           </Grid>
         )}
@@ -264,6 +294,7 @@ const FindPet = ({ onSearch, loading }) => {
               label="Tipo de pet"
               items={petTypes}
               disabled={loading}
+              value={selectedPetType}
             />
           </Grid>
         )}
@@ -274,6 +305,7 @@ const FindPet = ({ onSearch, loading }) => {
               label="Sexo"
               items={genders}
               disabled={loading}
+              value={selectedGender}
             />
           </Grid>
         )}
@@ -283,6 +315,7 @@ const FindPet = ({ onSearch, loading }) => {
               handleChange={handleSizeChange}
               label="Porte"
               items={sizes}
+              value={selectedSize}
               disabled={loading}
             />
           </Grid>
@@ -293,6 +326,7 @@ const FindPet = ({ onSearch, loading }) => {
               handleChange={handleStatusChange}
               label="Situação"
               items={status}
+              value={selectedStatus}
               disabled={loading}
             />
           </Grid>
@@ -399,7 +433,13 @@ const FindPet = ({ onSearch, loading }) => {
             </Grid>
           )}
         </Grid>
-        <Grid item xs={12} md={12} mx={{ alignContent: "center" }}>
+        <Grid
+          item
+          sx={{ my: 4 }}
+          xs={12}
+          md={12}
+          mx={{ alignContent: "center" }}
+        >
           <Button
             fullWidth
             variant="outlined"
