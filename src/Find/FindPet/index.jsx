@@ -126,7 +126,6 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     if (onSearch) {
-      document.querySelector("#pets").scrollIntoView();
       onSearch(clean(payload), selectedImage);
     }
   };
