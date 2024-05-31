@@ -32,9 +32,7 @@ const FindSelect = ({ label, items, handleChange, ...props }) => (
       </MenuItem>
       {items.map((item) => (
         <MenuItem key={item.value} value={item.value}>
-          <Checkbox
-            checked={!!props.value.find((el) => el == item.value)}
-          />
+          <Checkbox checked={!!props.value.find((el) => el == item.value)} />
           <ListItemText primary={item.label} />
         </MenuItem>
       ))}
@@ -121,7 +119,8 @@ const FindPet = ({ onSearch, loading }) => {
     };
 
     const clean = (obj) => {
-      for (let propName in obj) !obj[propName].$in.length && delete obj[propName];
+      for (let propName in obj)
+        !obj[propName].$in.length && delete obj[propName];
       return obj;
     };
 
@@ -209,7 +208,8 @@ const FindPet = ({ onSearch, loading }) => {
       "attributes.situacao": { $in: selectedStatus },
     };
     const clean = (obj) => {
-      for (let propName in obj) !obj[propName].$in.length && delete obj[propName];
+      for (let propName in obj)
+        !obj[propName].$in.length && delete obj[propName];
       return obj;
     };
 

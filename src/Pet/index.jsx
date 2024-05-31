@@ -192,7 +192,7 @@ const Pet = () => {
               </Alert>
             )}
           {(!pet["attributes"]["abrigo"] ||
-            pet["attributes"]["abrigo"]["data"]) && (
+            !pet["attributes"]["abrigo"]["data"]) && (
             <Alert icon={<Warning fontSize="inherit" />} severity="error">
               Este animal <b>não</b> está abrigado e precisa de um abrigo!
             </Alert>
